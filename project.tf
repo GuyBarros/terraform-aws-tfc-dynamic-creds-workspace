@@ -44,7 +44,7 @@ resource "aws_iam_role" "project_role" {
          "app.terraform.io:aud": "${one(var.oidc_provider_client_id_list)}"
        },
        "StringLike": {
-         "app.terraform.io:sub": "organization:${var.tfc_organization_name}:project:${var.tfc_workspace_project_id}:stack:*:deployment:*:operation:*"
+         "app.terraform.io:sub": "organization:${var.tfc_organization_name}:project:${var.tfc_workspace_project_id}:*"
        }
      }
    }

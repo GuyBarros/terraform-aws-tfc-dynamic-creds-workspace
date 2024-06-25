@@ -2,8 +2,6 @@
 # For credentials scoped to a Workspace...
 #
 
-
-
 #
 # Create AWS role for the workspace to Assume
 #
@@ -28,7 +26,7 @@ resource "aws_iam_role" "workspace_role" {
          "app.terraform.io:aud": "${one(var.oidc_provider_client_id_list)}"
        },
        "StringLike": {
-         "app.terraform.io:sub": "organization:${var.tfc_organization_name}:project:${var.tfc_workspace_project_name}:workspace:${var.tfc_workspace_name}:run_phase:*"
+         "app.terraform.io:sub": "organization:${data.tfe_organization.tfe_organization.external_id}:project:${data.tfe_project.tfe_project.id}:workspace:${var.tfc_workspace_name}:run_phase:*"
        }
      }
    },
@@ -43,7 +41,7 @@ resource "aws_iam_role" "workspace_role" {
          "app.terraform.io:aud": "${one(var.oidc_provider_client_id_list)}"
        },
        "StringLike": {
-         "app.terraform.io:sub": "organization:${var.tfc_organization_name}:project:${var.tfc_workspace_project_id}:stack:*:deployment:*:operation:*"
+         "app.terraform.io:sub": "organization:${var.tfc_organization_name}:project:${var.tfc_workspace_project_id}:*"
        }
      }
    }
