@@ -31,6 +31,21 @@ resource "aws_iam_role" "workspace_role" {
          "app.terraform.io:sub": "organization:${var.tfc_organization_name}:project:${var.tfc_workspace_project_name}:workspace:${var.tfc_workspace_name}:run_phase:*"
        }
      }
+   },
+   {
+     "Effect": "Allow",
+     "Principal": {
+       "Federated": "${var.oidc_provider_arn}"
+     },
+     "Action": "sts:AssumeRoleWithWebIdentity",
+     "Condition": {
+       "StringEquals": {
+         "app.terraform.io:aud": "${one(var.oidc_provider_client_id_list)}"
+       },
+       "StringLike": {
+         "app.terraform.io:sub": "organization:${var.tfc_organization_name}:project:${var.tfc_workspace_project_id}:stack:*:deployment:*:operation:*"
+       }
+     }
    }
  ]
 }
